@@ -40,62 +40,169 @@ namespace AirportService
 
 		public void CreateCrew(int departId, CrewDTO value)
 		{
-			throw new NotImplementedException();
+			var departure = unit.DeparturesRepo.GetEntityById(departId);
+			if (departure != null)
+			{
+				var crew = mapper.Map<CrewDTO, Crew>(value);
+				if (crew == null)
+				{
+					throw new Exception("Error: Can't add this crew to the the departure!");
+				}
+				departure.CrewItem = crew;
+				unit.DeparturesRepo.Update(departure);
+				unit.SaveChanges();
+			}
+			else
+			{
+				throw new Exception("Error: Can't find such departure!");
+			}
 		}
 
 		public void CreateDeparture(DepartureDTO departure)
 		{
-			throw new NotImplementedException();
+			if (departure != null)
+			{
+				Departure newDepart = mapper.Map<DepartureDTO, Departure>(departure);
+				unit.DeparturesRepo.Insert(newDepart);
+				unit.SaveChanges();
+			}
 		}
 
 		public void CreateFlight(FlightDTO flight)
 		{
-			throw new NotImplementedException();
+			if (flight == null)
+			{
+				Flight newFlight = mapper.Map<FlightDTO, Flight>(flight);
+				unit.FlightsRepo.Insert(newFlight);
+				unit.SaveChanges();
+			}
 		}
 
 		public void CreatePilot(PilotDTO pilot)
 		{
-			throw new NotImplementedException();
+			if (pilot != null)
+			{
+				Pilot newPilot = mapper.Map<PilotDTO, Pilot>(pilot);
+				unit.PilotsRepo.Insert(newPilot);
+				unit.SaveChanges();
+			}
 		}
 
 		public void CreatePlane(int departId, PlaneDTO value)
 		{
-			throw new NotImplementedException();
+			var departure = unit.DeparturesRepo.GetEntityById(departId);
+			if (departure != null)
+			{
+				var plane = mapper.Map<PlaneDTO, Plane>(value);
+				if (plane == null)
+				{
+					throw new Exception("Error: Can't add this crew to the the departure!");
+				}
+				departure.PlaneItem = plane;
+				unit.DeparturesRepo.Update(departure);
+				unit.SaveChanges();
+			}
+			else
+			{
+				throw new Exception("Error: Can't find such departure!");
+			}
 		}
 
 		public void CreatePlaneType(PlaneTypeDTO planeType)
 		{
-			throw new NotImplementedException();
+			if (planeType != null)
+			{
+				PlaneType newPlaneType = mapper.Map<PlaneTypeDTO, PlaneType>(planeType);
+				unit.PlaneTypesRepo.Insert(newPlaneType);
+				unit.SaveChanges();
+			}
 		}
 
 		public void CreateStewardess(StewardessDTO stewardess)
 		{
-			throw new NotImplementedException();
+			if (stewardess != null)
+			{
+				Stewardess newStewardess = mapper.Map<StewardessDTO, Stewardess>(stewardess);
+				unit.StewardessesRepo.Insert(newStewardess);
+			}
 		}
 
 		public void CreateTicket(int flightId, TicketDTO value)
 		{
-			throw new NotImplementedException();
+			var flight = unit.FlightsRepo.GetEntityById(flightId);
+			if (flight != null)
+			{
+				var ticket = mapper.Map<TicketDTO, Ticket>(value);
+				if (ticket == null)
+				{
+					throw new Exception("Error: Can't add this ticket to the the flight!");
+				}
+				flight.Tickets.Add(ticket);
+				unit.FlightsRepo.Update(flight);
+				unit.SaveChanges();
+			}
+			else
+			{
+				throw new Exception("Error: Can't find such flight!");
+			}
 		}
 
 		public void DeleteCrew(int id)
 		{
-			throw new NotImplementedException();
+			var itemToDelete = unit.DeparturesRepo.GetEntities().Find(p => p.CrewItem.Id == id);
+			if (itemToDelete != null)
+			{
+				itemToDelete.CrewItem = null;
+				unit.DeparturesRepo.Update(itemToDelete);
+				unit.SaveChanges();
+			}
+			else
+			{
+				throw new Exception("Can't find such crew!");
+			}
 		}
 
 		public void DeleteDeparture(int id)
 		{
-			throw new NotImplementedException();
+			
+			var departureToDelete = unit.DeparturesRepo.GetEntityById(id);
+			if (departureToDelete != null)
+			{
+				unit.DeparturesRepo.Delete(id);
+				unit.SaveChanges();
+			}
+			else
+			{
+				throw new Exception("Error: Cant't find such departure to delete.");
+			}
 		}
-
+		
 		public void DeleteFlight(int id)
 		{
-			throw new NotImplementedException();
+			var flightToDelete = unit.FlightsRepo.GetEntityById(id);
+			if (flightToDelete != null)
+			{
+				unit.FlightsRepo.Delete(id);
+				unit.SaveChanges();
+			}
+			else
+			{
+				throw new Exception("Error: Cant't find such flight to delete.");
+			}
 		}
 
 		public void DeletePilot(int id)
 		{
-			throw new NotImplementedException();
+			var pilotToDelete = unit.PilotsRepo.GetEntityById(id);
+			if (pilotToDelete != null)
+			{
+				unit.PilotsRepo.Delete(id);
+				unit.SaveChanges();
+			}
+			else
+			{
+				throw new Exception("Error: Cant't find such pilot to delete.");
+			}
 		}
 
 		public void DeletePlane(int id)
@@ -105,17 +212,46 @@ namespace AirportService
 
 		public void DeletePlaneType(int id)
 		{
-			throw new NotImplementedException();
+			var typeToDelete = unit.PlaneTypesRepo.GetEntityById(id);
+			if (typeToDelete != null)
+			{
+				unit.PlaneTypesRepo.Delete(id);
+				unit.SaveChanges();
+			}
+			else
+			{
+				throw new Exception("Error: Cant't find such type of plane to delete.");
+			}
 		}
 
 		public void DeleteStewardess(int id)
 		{
-			throw new NotImplementedException();
+			var stewardessToDelete = unit.StewardessesRepo.GetEntityById(id);
+			if (stewardessToDelete != null)
+			{
+				unit.StewardessesRepo.Delete(id);
+				unit.SaveChanges();
+			}
+			else
+			{
+				throw new Exception("Error: Cant't find such stewardess to delete.");
+			}
 		}
 
 		public void DeleteTicket(int id)
 		{
-			throw new NotImplementedException();
+			
+			var itemToDelete = unit.FlightsRepo.GetEntities().Find(p => p.Tickets.Find(i => i.Id == id) != null);
+			if (itemToDelete != null)
+			{
+				itemToDelete.Tickets.RemoveAll(p=>p.Id==id);
+				unit.FlightsRepo.Update(itemToDelete);
+				unit.SaveChanges();
+			}
+			else
+			{
+				throw new Exception("Can't find such ticket!");
+			}
 		}
 
 		public CrewDTO GetCrewById(int id)
