@@ -7,7 +7,7 @@ using DTOLibrary.DTOs;
 
 namespace AirportService
 {
-    public class AirportService : IAirportService
+    public class AirportService : IAirportService, IBLLService
 	{
 
 		private static UOW unitOfWork = new UOW(new DataSource());

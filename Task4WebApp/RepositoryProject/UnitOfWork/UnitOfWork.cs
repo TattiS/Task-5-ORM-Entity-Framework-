@@ -82,7 +82,7 @@ namespace DALProject.UnitOfWork
 
 		#region IDisposable Support
 		private bool disposedValue = false;
-		protected virtual void Dispose(bool disposing)
+		public virtual void Dispose(bool disposing)
 		{
 			if (!disposedValue)
 			{
@@ -94,10 +94,9 @@ namespace DALProject.UnitOfWork
 				disposedValue = true;
 			}
 		}
-		// Этот код добавлен для правильной реализации шаблона высвобождаемого класса.
+		
 		void IDisposable.Dispose()
 		{
-			// Не изменяйте этот код. Разместите код очистки выше, в методе Dispose(bool disposing).
 			Dispose(true);
 
 		}
