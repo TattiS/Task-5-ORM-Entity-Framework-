@@ -207,7 +207,17 @@ namespace AirportService
 
 		public void DeletePlane(int id)
 		{
-			throw new NotImplementedException();
+			var itemToDelete = unit.DeparturesRepo.GetEntities().Find(p => p.PlaneItem.Id == id);
+			if (itemToDelete != null)
+			{
+				itemToDelete.PlaneItem=null;
+				unit.DeparturesRepo.Update(itemToDelete);
+				unit.SaveChanges();
+			}
+			else
+			{
+				throw new Exception("Error: Can't find such plane to delete!");
+			}
 		}
 
 		public void DeletePlaneType(int id)
@@ -256,147 +266,258 @@ namespace AirportService
 
 		public CrewDTO GetCrewById(int id)
 		{
-			throw new NotImplementedException();
+			return GetCrews().Find(p => p.Id == id);
 		}
 
 		public List<CrewDTO> GetCrews()
 		{
-			throw new NotImplementedException();
+			List<Crew> crews = new List<Crew>();
+			foreach (var i in unit.DeparturesRepo.GetEntities())
+			{
+				if (i.CrewItem != null)
+				{ crews.Add(i.CrewItem); }
+			}
+			return mapper.Map<List<Crew>, List<CrewDTO>>(crews);
 		}
 
 		public List<CrewDTO> GetCrewsBy(Predicate<CrewDTO> predicate)
 		{
-			throw new NotImplementedException();
+			return GetCrews().FindAll(predicate);
 		}
 
 		public DepartureDTO GetDepartureById(int id)
 		{
-			throw new NotImplementedException();
+			Departure departure = unit.DeparturesRepo.GetEntityById(id);
+			return mapper.Map<Departure, DepartureDTO>(departure);
 		}
 
 		public List<DepartureDTO> GetDepartures()
 		{
-			throw new NotImplementedException();
+			List<Departure> result = unit.DeparturesRepo.GetEntities();
+			return mapper.Map<List<Departure>, List<DepartureDTO>>(result);
 		}
 
 		public FlightDTO GetFlightById(int id)
 		{
-			throw new NotImplementedException();
+			FlightDTO result = mapper.Map<Flight, FlightDTO>(unit.FlightsRepo.GetEntityById(id));
+			return result;
 		}
 
 		public List<FlightDTO> GetFlights()
 		{
-			throw new NotImplementedException();
+			List<Flight> result = unit.FlightsRepo.GetEntities();
+			return mapper.Map<List<Flight>, List<FlightDTO>>(result);
 		}
 
 		public List<FlightDTO> GetFlightsByArrival(DateTime time)
 		{
-			throw new NotImplementedException();
+			List<FlightDTO> result = mapper.Map<List<Flight>, List<FlightDTO>>(unit.FlightsRepo.GetEntities().FindAll(f => f.ArrivalTime == time));
+			return result;
 		}
 
 		public List<FlightDTO> GetFlightsByDeparture(DateTime time)
 		{
-			throw new NotImplementedException();
+			List<FlightDTO> result = mapper.Map<List<Flight>, List<FlightDTO>>(unit.FlightsRepo.GetEntities().FindAll(f => f.DepartureTime == time));
+			return result;
 		}
 
 		public List<FlightDTO> GetFlightsByDestination(string destination)
 		{
-			throw new NotImplementedException();
+			List<FlightDTO> result = mapper.Map<List<Flight>, List<FlightDTO>>(unit.FlightsRepo.GetEntities().FindAll(f => f.Destination == destination));
+			return result;
 		}
 
 		public List<FlightDTO> GetFlightsByPoint(string departurePoint)
 		{
-			throw new NotImplementedException();
+			List<FlightDTO> result = mapper.Map<List<Flight>, List<FlightDTO>>(unit.FlightsRepo.GetEntities().FindAll(f => f.DeparturePoint == departurePoint));
+			return result;
 		}
 
 		public PilotDTO GetPilotById(int id)
 		{
-			throw new NotImplementedException();
+			Pilot pilot = unit.PilotsRepo.GetEntityById(id);
+			return mapper.Map<Pilot, PilotDTO>(pilot);
 		}
 
 		public List<PilotDTO> GetPilots()
 		{
-			throw new NotImplementedException();
+			List<Pilot> pilots = unit.PilotsRepo.GetEntities();
+			return mapper.Map<List<Pilot>, List<PilotDTO>>(pilots);
 		}
 
 		public PlaneDTO GetPlaneById(int id)
 		{
-			throw new NotImplementedException();
+			return GetPlanes().Find(p => p.Id == id);
 		}
 
 		public List<PlaneDTO> GetPlanes()
 		{
-			throw new NotImplementedException();
+			var departures = unit.DeparturesRepo.GetEntities().FindAll(p => p.PlaneItem != null);
+			List<Plane> planes = new List<Plane>();
+			if (departures != null && departures.Count > 0)
+			{
+				foreach (var item in departures)
+				{
+					planes.Add(item.PlaneItem);
+				}
+				return mapper.Map<List<Plane>, List<PlaneDTO>>(planes);
+			}
+			else
+			{
+				throw new Exception("Error: There isn't any plane.");
+			}
 		}
 
 		public PlaneTypeDTO GetPlaneTypeById(int id)
 		{
-			throw new NotImplementedException();
+			PlaneType type = unit.PlaneTypesRepo.GetEntityById(id);
+			return mapper.Map<PlaneType, PlaneTypeDTO>(type);
 		}
 
 		public List<PlaneTypeDTO> GetPlaneTypes()
 		{
-			throw new NotImplementedException();
+			List<PlaneType> planeTypes = unit.PlaneTypesRepo.GetEntities();
+			return mapper.Map<List<PlaneType>, List<PlaneTypeDTO>>(planeTypes);
 		}
 
 		public StewardessDTO GetStewardessById(int id)
 		{
-			throw new NotImplementedException();
+			Stewardess stewardess = unit.StewardessesRepo.GetEntityById(id);
+			return mapper.Map<Stewardess, StewardessDTO>(stewardess);
 		}
 
 		public List<StewardessDTO> GetStewardesses()
 		{
-			throw new NotImplementedException();
+			List<Stewardess> stewardesses = unit.StewardessesRepo.GetEntities();
+			return mapper.Map<List<Stewardess>, List<StewardessDTO>>(stewardesses);
 		}
 
 		public List<TicketDTO> GetTickets()
 		{
-			throw new NotImplementedException();
+			List<Flight> flights = unit.FlightsRepo.GetEntities().FindAll(p => p.Tickets != null && p.Tickets.Count > 0);
+			if (flights != null && flights.Count > 0)
+			{
+				var tickets = new List<Ticket>();
+				foreach (var item in flights)
+				{
+					tickets.AddRange(item.Tickets);
+				}
+				return mapper.Map<List<Ticket>, List<TicketDTO>>(tickets);
+			}
+			else
+			{
+				throw new Exception("Error: There are no tickets.");
+			}
 		}
 
 		public List<TicketDTO> GetTicketsByFlightId(int flightId)
 		{
-			throw new NotImplementedException();
+			List<Ticket> tickets =unit.FlightsRepo.GetEntityById(flightId).Tickets;
+			return mapper.Map<List<Ticket>, List<TicketDTO>>(tickets);
 		}
 
 		public void UpdateCrew(CrewDTO value)
 		{
-			throw new NotImplementedException();
+			if (value != null)
+			{
+				Crew newCrew = mapper.Map<CrewDTO, Crew>(value);
+				unit.DeparturesRepo.GetEntities().FindAll(p => p.CrewItem.Id.Equals(value.Id)).ForEach(c => c.CrewItem = newCrew);
+				unit.SaveChanges();
+			}
+			else
+			{
+				throw new ArgumentNullException();
+			}
 		}
 
 		public void UpdateDeparture(DepartureDTO departure)
 		{
-			throw new NotImplementedException();
+			if (departure != null)
+			{
+				Departure updatedDepart = mapper.Map<DepartureDTO, Departure>(departure);
+				unit.DeparturesRepo.Update(updatedDepart);
+			}
 		}
 
 		public void UpdateFlight(FlightDTO flight)
 		{
-			throw new NotImplementedException();
+			if (flight != null)
+			{
+				Flight insertingFlight = mapper.Map<FlightDTO, Flight>(flight);
+				unit.FlightsRepo.Update(insertingFlight);
+				unit.SaveChanges();
+			}
 		}
 
 		public void UpdatePilot(PilotDTO pilot)
 		{
-			throw new NotImplementedException();
+			if (pilot != null)
+			{
+				Pilot updtPilot = mapper.Map<PilotDTO, Pilot>(pilot);
+				unit.PilotsRepo.Update(updtPilot);
+				unit.SaveChanges();
+			}
 		}
 
 		public void UpdatePlane(PlaneDTO value)
 		{
-			throw new NotImplementedException();
+			if (value != null)
+			{
+				Plane newPlane = mapper.Map<PlaneDTO, Plane>(value);
+				var departure = unit.DeparturesRepo.GetEntities().Find(p => p.PlaneItem.Id.Equals(value.Id));
+				departure.PlaneItem = newPlane;
+				unit.DeparturesRepo.Update(departure);
+				unit.SaveChanges();
+			}
+			else
+			{
+				throw new ArgumentNullException();
+			}
 		}
 
 		public void UpdateStewardess(StewardessDTO stewardess)
 		{
-			throw new NotImplementedException();
+			if (stewardess != null)
+			{
+				Stewardess updtStewardess = mapper.Map<StewardessDTO, Stewardess>(stewardess);
+				unit.StewardessesRepo.Update(updtStewardess);
+				unit.SaveChanges();
+			}
 		}
 
 		public void UpdateTicket(TicketDTO value)
 		{
-			throw new NotImplementedException();
+			if (value != null)
+			{
+				Ticket changedTicket = mapper.Map<TicketDTO, Ticket>(value);
+				var flight = unit.FlightsRepo.GetEntityById(value.FlightId);
+				var tickets = flight.Tickets;
+				var ticket = tickets.Find(k => k.Id == value.Id);
+				if (ticket != null)
+				{
+					tickets.Remove(ticket);
+					tickets.Add(changedTicket);
+					unit.FlightsRepo.Update(flight);
+				}
+				else
+				{
+					throw new Exception("Error: There is no such ticket in this flight.");
+				}
+			}
+			else
+			{
+				throw new ArgumentNullException();
+			}
 		}
 
 		public void UpdateType(PlaneTypeDTO planeType)
 		{
-			throw new NotImplementedException();
+			if (planeType != null)
+			{
+				PlaneType updtPlaneType = mapper.Map<PlaneTypeDTO, PlaneType>(planeType);
+				unit.PlaneTypesRepo.Update(updtPlaneType);
+				unit.SaveChanges();
+			}
 		}
 	}
 }
