@@ -8,6 +8,11 @@ namespace DALProject
 {
     public class MainDBContext:DbContext
     {
+		public MainDBContext()
+		{
+			Database.EnsureCreated();
+		}
+
 		public DbSet<Flight> Flights { get; set; }
 		public DbSet<Departure> Departures { get; set; }
 		public DbSet<Stewardess> Stewardesses { get; set; }
@@ -17,8 +22,7 @@ namespace DALProject
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			//optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MyTestDatabase;Trusted_Connection=True; Integrated Security=True;");
-			optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=MyTestDatabase;Trusted_Connection=True;Integrated Security=True;");
+			optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MyTestDatabase;Trusted_Connection=True;Integrated Security=True;");
 		}
 	}
 }
