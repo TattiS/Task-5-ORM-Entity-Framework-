@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Task4WebApp.Validators;
 using FluentValidation;
+using DALProject;
+using AirportService;
 
 namespace Task4WebApp
 {
@@ -19,6 +21,8 @@ namespace Task4WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+			services.AddDbContext<MainDBContext>().AddScoped<BLLService>();
 			services.AddMvc();
 			services.AddScoped<AirportService.AirportService>();
 			
