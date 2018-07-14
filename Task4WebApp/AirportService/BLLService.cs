@@ -66,6 +66,10 @@ namespace AirportService
 				unit.DeparturesRepo.Insert(newDepart);
 				unit.SaveChanges();
 			}
+			else
+			{
+				throw new ArgumentNullException();
+			}
 		}
 
 		public void CreateFlight(FlightDTO flight)
@@ -76,6 +80,10 @@ namespace AirportService
 				unit.FlightsRepo.Insert(newFlight);
 				unit.SaveChanges();
 			}
+			else
+			{
+				throw new ArgumentNullException();
+			}
 		}
 
 		public void CreatePilot(PilotDTO pilot)
@@ -85,6 +93,10 @@ namespace AirportService
 				Pilot newPilot = mapper.Map<PilotDTO, Pilot>(pilot);
 				unit.PilotsRepo.Insert(newPilot);
 				unit.SaveChanges();
+			}
+			else
+			{
+				throw new ArgumentNullException();
 			}
 		}
 
@@ -116,6 +128,10 @@ namespace AirportService
 				unit.PlaneTypesRepo.Insert(newPlaneType);
 				unit.SaveChanges();
 			}
+			else
+			{
+				throw new ArgumentNullException();
+			}
 		}
 
 		public void CreateStewardess(StewardessDTO stewardess)
@@ -124,6 +140,10 @@ namespace AirportService
 			{
 				Stewardess newStewardess = mapper.Map<StewardessDTO, Stewardess>(stewardess);
 				unit.StewardessesRepo.Insert(newStewardess);
+			}
+			else
+			{
+				throw new ArgumentNullException();
 			}
 		}
 
@@ -437,6 +457,10 @@ namespace AirportService
 				Departure updatedDepart = mapper.Map<DepartureDTO, Departure>(departure);
 				unit.DeparturesRepo.Update(updatedDepart);
 			}
+			else
+			{
+				throw new ArgumentNullException();
+			}
 		}
 
 		public void UpdateFlight(FlightDTO flight)
@@ -447,6 +471,10 @@ namespace AirportService
 				unit.FlightsRepo.Update(insertingFlight);
 				unit.SaveChanges();
 			}
+			else
+			{
+				throw new ArgumentNullException();
+			}
 		}
 
 		public void UpdatePilot(PilotDTO pilot)
@@ -456,6 +484,10 @@ namespace AirportService
 				Pilot updtPilot = mapper.Map<PilotDTO, Pilot>(pilot);
 				unit.PilotsRepo.Update(updtPilot);
 				unit.SaveChanges();
+			}
+			else
+			{
+				throw new ArgumentNullException();
 			}
 		}
 
@@ -482,6 +514,10 @@ namespace AirportService
 				Stewardess updtStewardess = mapper.Map<StewardessDTO, Stewardess>(stewardess);
 				unit.StewardessesRepo.Update(updtStewardess);
 				unit.SaveChanges();
+			}
+			else
+			{
+				throw new ArgumentNullException();
 			}
 		}
 
@@ -517,6 +553,10 @@ namespace AirportService
 				PlaneType updtPlaneType = mapper.Map<PlaneTypeDTO, PlaneType>(planeType);
 				unit.PlaneTypesRepo.Update(updtPlaneType);
 				unit.SaveChanges();
+			}
+			else
+			{
+				throw new ArgumentNullException();
 			}
 		}
 	}
