@@ -75,24 +75,25 @@ namespace DALProject
 			new PlaneType { Id = 3, AirLift=351800 , Model="Boeing 777-300", Seats=550  }
 		};
 
-
-
-
+		
 		public IEnumerable<Flight> Flights
 		{
-			get {
+			get
+			{
 				return this.flights;
 			}
 		}
 		public IEnumerable<Departure> Departures
 		{
-			get {
+			get
+			{
 				return this.departures;
 			}
 		}
 		public IEnumerable<Stewardess> Stewardesses
 		{
-			get {
+			get
+			{
 				return this.stewardesses;
 			}
 		}
@@ -110,7 +111,7 @@ namespace DALProject
 				return this.planeTypes;
 			}
 		}
-		
+
 
 
 	}

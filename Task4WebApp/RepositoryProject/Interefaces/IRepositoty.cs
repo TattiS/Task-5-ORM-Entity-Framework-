@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace DALProject.Interefaces
 {
-    interface IRepositoty<TEntity> where TEntity:class
+	interface IRepositoty<TEntity> where TEntity:class
     {
 		List<TEntity> GetEntities(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "");
 		TEntity GetEntityById(object id);
