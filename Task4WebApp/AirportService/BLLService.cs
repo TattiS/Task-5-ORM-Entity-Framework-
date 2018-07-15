@@ -39,7 +39,7 @@ namespace AirportService
 				mapper = mapConfig.CreateMapper();
 			}
 
-			Seeder.Seed(dBContext);
+			
 		}
 
 		public void CreateCrew(int departId, CrewDTO value)

@@ -16,10 +16,6 @@ namespace DALProject.Repositories
 		public Repository(MainDBContext dBContext)
 		{
 			this.context = dBContext;
-			
-		}
-		protected virtual void Set()
-		{
 			this.dataSet = this.context.Set<TEntity>();
 		}
 		
