@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DALProject.Models;
+﻿using DALProject.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DALProject
 {
-    public class MainDBContext:DbContext
+	public class MainDBContext:DbContext
     {
 		public MainDBContext()
 		{
@@ -33,6 +30,7 @@ namespace DALProject
 				.HasForeignKey(t => t.FlightId)
 				.OnDelete(DeleteBehavior.Cascade);
 		}
+
 
 	}
 }

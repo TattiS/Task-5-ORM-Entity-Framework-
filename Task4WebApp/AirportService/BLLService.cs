@@ -37,7 +37,7 @@ namespace AirportService
 				mapper = mapConfig.CreateMapper();
 			}
 
-			Seeder.Seed(dBContext);
+			//Seeder.Seed(dBContext);
 		}
 
 		public void CreateCrew(int departId, CrewDTO value)
@@ -186,7 +186,7 @@ namespace AirportService
 
 		public void DeleteDeparture(int id)
 		{
-			
+
 			var departureToDelete = unit.DeparturesRepo.GetEntityById(id);
 			if (departureToDelete != null)
 			{
@@ -198,7 +198,7 @@ namespace AirportService
 				throw new Exception("Error: Cant't find such departure to delete.");
 			}
 		}
-		
+
 		public void DeleteFlight(int id)
 		{
 			var flightToDelete = unit.FlightsRepo.GetEntityById(id);
@@ -232,7 +232,7 @@ namespace AirportService
 			var itemToDelete = unit.DeparturesRepo.GetEntities().Find(p => p.PlaneItem.Id == id);
 			if (itemToDelete != null)
 			{
-				itemToDelete.PlaneItem=null;
+				itemToDelete.PlaneItem = null;
 				unit.DeparturesRepo.Update(itemToDelete);
 				unit.SaveChanges();
 			}
@@ -272,11 +272,11 @@ namespace AirportService
 
 		public void DeleteTicket(int id)
 		{
-			
-			var itemToDelete = unit.FlightsRepo.GetEntities().Find(p => p.Tickets.Find(i => i.Id == id) != null);
+
+			var itemToDelete = unit.FlightsRepo.GetEntities(includeProperties: "Tickets").Find(p => p.Tickets.Find(i => i.Id == id) != null);
 			if (itemToDelete != null)
 			{
-				itemToDelete.Tickets.RemoveAll(p=>p.Id==id);
+				itemToDelete.Tickets.RemoveAll(p => p.Id == id);
 				unit.FlightsRepo.Update(itemToDelete);
 				unit.SaveChanges();
 			}
@@ -288,13 +288,13 @@ namespace AirportService
 
 		public CrewDTO GetCrewById(int id)
 		{
-			return GetCrews().Find(p => p.Id == id);
+			return GetCrews()?.Find(p => p.Id == id);
 		}
 
 		public List<CrewDTO> GetCrews()
 		{
 			List<Crew> crews = new List<Crew>();
-			foreach (var i in unit.DeparturesRepo.GetEntities())
+			foreach (var i in unit.DeparturesRepo.GetEntities(includeProperties: "CrewItem,PlaneItem"))
 			{
 				if (i.CrewItem != null)
 				{ crews.Add(i.CrewItem); }
@@ -304,66 +304,112 @@ namespace AirportService
 
 		public List<CrewDTO> GetCrewsBy(Predicate<CrewDTO> predicate)
 		{
-			return GetCrews().FindAll(predicate);
+			return GetCrews()?.FindAll(predicate);
 		}
 
 		public DepartureDTO GetDepartureById(int id)
 		{
 			Departure departure = unit.DeparturesRepo.GetEntityById(id);
+			if (departure == null)
+			{
+				return null;
+			}
 			return mapper.Map<Departure, DepartureDTO>(departure);
 		}
 
 		public List<DepartureDTO> GetDepartures()
 		{
-			List<Departure> result = unit.DeparturesRepo.GetEntities();
+			List<Departure> result = unit.DeparturesRepo.GetEntities(includeProperties: "CrewItem,PlaneItem");
+			if (result == null)
+			{
+				return null;
+			}
 			return mapper.Map<List<Departure>, List<DepartureDTO>>(result);
 		}
 
 		public FlightDTO GetFlightById(int id)
 		{
-			FlightDTO result = mapper.Map<Flight, FlightDTO>(unit.FlightsRepo.GetEntityById(id));
+			Flight subresult = unit.FlightsRepo.GetEntities(includeProperties: "Tickets").Find(p => p.Id == id);
+			if (subresult == null)
+			{
+				return null;
+			}
+				
+			FlightDTO result = mapper.Map<Flight, FlightDTO>(subresult);
 			return result;
 		}
 
 		public List<FlightDTO> GetFlights()
 		{
-			List<Flight> result = unit.FlightsRepo.GetEntities();
-			return mapper.Map<List<Flight>, List<FlightDTO>>(result);
+
+			List<Flight> subresult = unit.FlightsRepo.GetEntities(includeProperties: "Tickets");
+			List<FlightDTO> result = null;
+			if (subresult != null)
+			{
+				result = mapper.Map<List<Flight>, List<FlightDTO>>(subresult);
+			}
+			return result;
 		}
 
 		public List<FlightDTO> GetFlightsByArrival(DateTime time)
 		{
-			List<FlightDTO> result = mapper.Map<List<Flight>, List<FlightDTO>>(unit.FlightsRepo.GetEntities().FindAll(f => f.ArrivalTime == time));
-			return result;
+			List<Flight> subresult = unit.FlightsRepo.GetEntities(includeProperties: "Tickets").FindAll(f => f.ArrivalTime == time);
+			if (subresult == null)
+			{
+				return null;
+			}
+			return mapper.Map<List<Flight>, List<FlightDTO>>(subresult);
 		}
 
 		public List<FlightDTO> GetFlightsByDeparture(DateTime time)
 		{
-			List<FlightDTO> result = mapper.Map<List<Flight>, List<FlightDTO>>(unit.FlightsRepo.GetEntities().FindAll(f => f.DepartureTime == time));
-			return result;
+			List<Flight> result = unit.FlightsRepo.GetEntities(includeProperties: "Tickets").FindAll(f => f.DepartureTime == time);
+			if (result == null)
+			{
+				return null;
+			}
+			return mapper.Map<List<Flight>, List<FlightDTO>>(result);
 		}
 
 		public List<FlightDTO> GetFlightsByDestination(string destination)
 		{
-			List<FlightDTO> result = mapper.Map<List<Flight>, List<FlightDTO>>(unit.FlightsRepo.GetEntities().FindAll(f => f.Destination == destination));
-			return result;
+			
+			List<Flight> result = unit.FlightsRepo.GetEntities(includeProperties: "Tickets").FindAll(f => f.Destination == destination);
+			if (result == null)
+			{
+				return null;
+			}
+
+			return mapper.Map<List<Flight>, List<FlightDTO>>(result);
 		}
 
 		public List<FlightDTO> GetFlightsByPoint(string departurePoint)
 		{
-			List<FlightDTO> result = mapper.Map<List<Flight>, List<FlightDTO>>(unit.FlightsRepo.GetEntities().FindAll(f => f.DeparturePoint == departurePoint));
-			return result;
+			List<Flight> result = unit.FlightsRepo.GetEntities(includeProperties: "Tickets").FindAll(f => f.DeparturePoint == departurePoint) ;
+			if (result == null)
+			{
+				return null;
+			}
+			return mapper.Map<List<Flight>, List<FlightDTO>>(result);
 		}
 
 		public PilotDTO GetPilotById(int id)
 		{
 			Pilot pilot = unit.PilotsRepo.GetEntityById(id);
+			if (pilot == null)
+			{
+				return null;
+			}
 			return mapper.Map<Pilot, PilotDTO>(pilot);
 		}
 
 		public List<PilotDTO> GetPilots()
 		{
 			List<Pilot> pilots = unit.PilotsRepo.GetEntities();
+			if (pilots == null)
+			{
+				return null;
+			}
 			return mapper.Map<List<Pilot>, List<PilotDTO>>(pilots);
 		}
 
@@ -374,7 +420,7 @@ namespace AirportService
 
 		public List<PlaneDTO> GetPlanes()
 		{
-			var departures = unit.DeparturesRepo.GetEntities().FindAll(p => p.PlaneItem != null);
+			var departures = unit.DeparturesRepo.GetEntities(includeProperties: "CrewItem,PlaneItem").FindAll(p => p.PlaneItem != null);
 			List<Plane> planes = new List<Plane>();
 			if (departures != null && departures.Count > 0)
 			{
@@ -393,30 +439,47 @@ namespace AirportService
 		public PlaneTypeDTO GetPlaneTypeById(int id)
 		{
 			PlaneType type = unit.PlaneTypesRepo.GetEntityById(id);
+			if (type == null)
+			{
+				return null;
+			}
 			return mapper.Map<PlaneType, PlaneTypeDTO>(type);
 		}
 
 		public List<PlaneTypeDTO> GetPlaneTypes()
 		{
 			List<PlaneType> planeTypes = unit.PlaneTypesRepo.GetEntities();
+			if (planeTypes == null)
+			{
+				return null;
+			}
 			return mapper.Map<List<PlaneType>, List<PlaneTypeDTO>>(planeTypes);
 		}
 
 		public StewardessDTO GetStewardessById(int id)
 		{
 			Stewardess stewardess = unit.StewardessesRepo.GetEntityById(id);
+			if (stewardess == null)
+			{
+				return null;
+			}
+
 			return mapper.Map<Stewardess, StewardessDTO>(stewardess);
 		}
 
 		public List<StewardessDTO> GetStewardesses()
 		{
 			List<Stewardess> stewardesses = unit.StewardessesRepo.GetEntities();
+			if (stewardesses == null)
+			{
+				return null;
+			}
 			return mapper.Map<List<Stewardess>, List<StewardessDTO>>(stewardesses);
 		}
 
 		public List<TicketDTO> GetTickets()
 		{
-			List<Flight> flights = unit.FlightsRepo.GetEntities().FindAll(p => p.Tickets != null && p.Tickets.Count > 0);
+			List<Flight> flights = unit.FlightsRepo.GetEntities(includeProperties: "Tickets").FindAll(p => p.Tickets != null && p.Tickets.Count > 0);
 			if (flights != null && flights.Count > 0)
 			{
 				var tickets = new List<Ticket>();
@@ -434,7 +497,7 @@ namespace AirportService
 
 		public List<TicketDTO> GetTicketsByFlightId(int flightId)
 		{
-			List<Ticket> tickets =unit.FlightsRepo.GetEntityById(flightId).Tickets;
+			List<Ticket> tickets = unit.FlightsRepo.GetEntities(includeProperties: "Tickets").Find(p => p.Id == flightId).Tickets;
 			return mapper.Map<List<Ticket>, List<TicketDTO>>(tickets);
 		}
 
@@ -498,7 +561,7 @@ namespace AirportService
 			if (value != null)
 			{
 				Plane newPlane = mapper.Map<PlaneDTO, Plane>(value);
-				var departure = unit.DeparturesRepo.GetEntities().Find(p => p.PlaneItem.Id.Equals(value.Id));
+				var departure = unit.DeparturesRepo.GetEntities(includeProperties: "PlaneItem").Find(p => p.PlaneItem.Id.Equals(value.Id));
 				departure.PlaneItem = newPlane;
 				unit.DeparturesRepo.Update(departure);
 				unit.SaveChanges();

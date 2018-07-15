@@ -10,8 +10,8 @@ namespace Task4WebApp.Controllers
 	[Route("api/departures")]
 	public class DeparturesController : Controller
 	{
-		private readonly AirportService.AirportService airport;
-		public DeparturesController(AirportService.AirportService airportService)
+		private readonly AirportService.BLLService airport;
+		public DeparturesController(AirportService.BLLService airportService)
 		{
 			this.airport = airportService;
 		}

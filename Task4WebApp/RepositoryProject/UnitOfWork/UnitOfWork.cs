@@ -1,8 +1,10 @@
 ﻿using System;
-
+using System.Linq;
+using System.Linq.Expressions;
 using DALProject.Interefaces;
 using DALProject.Models;
 using DALProject.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace DALProject.UnitOfWork
 {
@@ -80,6 +82,7 @@ namespace DALProject.UnitOfWork
 			mainDB.SaveChanges();
 		}
 
+		
 		#region IDisposable Support
 		private bool disposedValue = false;
 		public virtual void Dispose(bool disposing)

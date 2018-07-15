@@ -12,12 +12,17 @@ namespace DALProject.Repositories
 	public class Repository<TEntity>:IRepositoty<TEntity> where TEntity:class
     {
 		protected readonly MainDBContext context;
-		protected readonly DbSet<TEntity> dataSet;
+		protected DbSet<TEntity> dataSet;
 		public Repository(MainDBContext dBContext)
 		{
 			this.context = dBContext;
+			
+		}
+		protected virtual void Set()
+		{
 			this.dataSet = this.context.Set<TEntity>();
 		}
+		
 		public virtual TEntity GetEntityById(object id)
 		{
 			return this.dataSet.Find(id);
@@ -52,7 +57,7 @@ namespace DALProject.Repositories
 			foreach (var includeProperty in includeProperties.Split
 				(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
 			{
-				query = query.Include(includeProperty);
+				query = query?.Include(includeProperty);
 			}
 
 			if (orderBy != null)
@@ -61,7 +66,7 @@ namespace DALProject.Repositories
 			}
 			else
 			{
-				return query.ToList();
+				return query?.ToList();
 			}
 
 		}
@@ -78,4 +83,6 @@ namespace DALProject.Repositories
 		}
 
 	}
+
+
 }
