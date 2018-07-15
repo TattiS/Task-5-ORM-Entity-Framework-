@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AirportService;
+using DALProject;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Task4WebApp.Validators;
-using FluentValidation;
-using DALProject;
-using AirportService;
 
 namespace Task4WebApp
 {

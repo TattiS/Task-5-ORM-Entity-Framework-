@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using DALProject.Interefaces;
-
+using DALProject.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DALProject.Repositories

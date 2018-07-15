@@ -1,8 +1,6 @@
-﻿using DTOLibrary.DTOs;
-using FluentValidation;
+﻿using DALProject;
+using DTOLibrary.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using Task4WebApp.Validators;
 
 namespace Task4WebApp.Controllers
 {
