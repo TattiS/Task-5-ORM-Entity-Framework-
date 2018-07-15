@@ -22,7 +22,7 @@ namespace Task4WebApp
 
 			services.AddDbContext<MainDBContext>().AddScoped<BLLService>();
 			services.AddMvc();
-			services.AddScoped<AirportService.AirportService>();
+			
 			
 
 
