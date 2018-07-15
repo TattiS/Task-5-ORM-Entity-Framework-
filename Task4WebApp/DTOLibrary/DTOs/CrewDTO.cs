@@ -10,7 +10,6 @@ namespace DTOLibrary.DTOs
 		public int Id { get; set; }
 		[Required]
 		public int PilotId { get; set; }
-		[Required]
 		public List<StewardessDTO> Stewardesses { get; set; }
 
 	}

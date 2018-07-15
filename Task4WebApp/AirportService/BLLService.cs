@@ -25,9 +25,11 @@ namespace AirportService
 				c.CreateMap<Ticket, TicketDTO>().ReverseMap();
 				c.CreateMap<Crew, CrewDTO>().ReverseMap();
 				c.CreateMap<Pilot, PilotDTO>().ForMember(e => e.StartedIn, opt => opt.Ignore());
-				c.CreateMap<PilotDTO, Pilot>().ForMember(e => e.Experience, opt => opt.MapFrom(src => (DateTime.Today.Subtract(src.StartedIn))));
+				c.CreateMap<PilotDTO, Pilot>().ForMember(e => e.Experience, opt => opt.MapFrom(src => (DateTime.Today.Subtract(src.StartedIn))))
+											  .ForMember(e=> e.TimeTicks, opt=>opt.Ignore());
 				c.CreateMap<Plane, PlaneDTO>().ForMember(e => e.ExpiryDate, opt => opt.Ignore());
-				c.CreateMap<PlaneDTO, Plane>().ForMember(e => e.OperationLife, opt => opt.MapFrom(src => (src.ExpiryDate.Subtract(src.ReleaseDate))));
+				c.CreateMap<PlaneDTO, Plane>().ForMember(e => e.OperationLife, opt => opt.MapFrom(src => (src.ExpiryDate.Subtract(src.ReleaseDate))))
+											  .ForMember(e=> e.TimeTicks, opt=> opt.Ignore());
 				c.CreateMap<Stewardess, StewardessDTO>().ReverseMap();
 				c.CreateMap<PlaneType, PlaneTypeDTO>().ReverseMap();
 			});

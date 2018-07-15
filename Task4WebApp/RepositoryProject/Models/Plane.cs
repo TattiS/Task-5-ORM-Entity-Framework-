@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DALProject.Models
 {
@@ -7,7 +8,19 @@ namespace DALProject.Models
 		public string Name { get; set; }
 		public PlaneType TypeOfPlane { get; set; }
 		public DateTime ReleaseDate { get; set; }
-		public TimeSpan OperationLife { get; set; }
-
+		public long TimeTicks { get; set; }
+		[NotMapped]
+		public TimeSpan OperationLife
+		{
+			get
+			{
+				return new TimeSpan(TimeTicks);
+			}
+			set
+			{
+				TimeTicks = value.Ticks;
+			}
+		}
+		
 	}
 }

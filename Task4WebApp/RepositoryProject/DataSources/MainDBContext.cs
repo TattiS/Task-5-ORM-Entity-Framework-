@@ -29,6 +29,7 @@ namespace DALProject
 				.WithOne()
 				.HasForeignKey(t => t.FlightId)
 				.OnDelete(DeleteBehavior.Cascade);
+			
 		}
 
 
