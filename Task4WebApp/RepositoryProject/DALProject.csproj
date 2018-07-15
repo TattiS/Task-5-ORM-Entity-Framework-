@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Repositories\FlightRepository.cs" />
     <Compile Remove="Repositories\IFlightRepository.cs" />
   </ItemGroup>
 

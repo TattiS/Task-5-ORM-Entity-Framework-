@@ -1,8 +1,6 @@
-﻿using DTOLibrary.DTOs;
-using FluentValidation;
+﻿using DALProject;
+using DTOLibrary.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using Task4WebApp.Validators;
 
 namespace Task4WebApp.Controllers
 {
@@ -10,9 +8,9 @@ namespace Task4WebApp.Controllers
     [Route("api/flights")]
     public class FlightController : Controller
     {
-		private readonly AirportService.AirportService airport;
-		
-		public FlightController(AirportService.AirportService service)
+		//private readonly AirportService.AirportService airport;
+		private readonly AirportService.BLLService airport;
+		public FlightController(AirportService.BLLService service)
 		{
 			this.airport = service;
 			
