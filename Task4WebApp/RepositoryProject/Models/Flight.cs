@@ -7,12 +7,12 @@ namespace DALProject.Models
 {
 	public class Flight: BaseEntity
 	{
-		[MaxLength(150)]
+		[StringLength(150)]
 		[Required]
 		public string DeparturePoint { get; set; }
 		[Required]
 		public DateTime DepartureTime { get; set; }
-		[MaxLength(150)]
+		[StringLength(150)]
 		[Required]
 		public string Destination { get; set; }
 		[Required]
