@@ -5,10 +5,10 @@ namespace DALProject.Models
 {
 	public class Stewardess : BaseEntity
 	{
-		[MaxLength(50)]
+		[StringLength(50)]
 		[Required]
 		public string Name { get; set; }
-		[MaxLength(50)]
+		[StringLength(50)]
 		[Required]
 		public string Surname { get; set; }
 		public DateTime BirthDate { get; set; }
