@@ -12,9 +12,17 @@ namespace Task4WebApp.Controllers
     [Route("api/PlaneTypes")]
     public class PlaneTypesController : Controller
     {
-		private readonly AirportService.BLLService airport;
+		//private readonly AirportService.BLLService airport;
 
-		public PlaneTypesController(AirportService.BLLService service)
+		//public PlaneTypesController(AirportService.BLLService service)
+		//{
+		//	this.airport = service;
+
+		//}
+
+		private readonly AirportService.Services.PlaneTypeService airport;
+
+		public PlaneTypesController(AirportService.Services.PlaneTypeService service)
 		{
 			this.airport = service;
 

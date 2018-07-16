@@ -1,5 +1,7 @@
 ﻿using AirportService;
+using AirportService.Services;
 using DALProject;
+using DALProject.UnitOfWork;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +22,17 @@ namespace Task4WebApp
         public void ConfigureServices(IServiceCollection services)
         {
 
-			services.AddDbContext<MainDBContext>().AddScoped<BLLService>();
+			services.AddDbContext<MainDBContext>()
+				.AddScoped<UnitOfWork>()
+				.AddScoped<CrewService>()
+				.AddScoped<DepartureService>()
+				.AddScoped<FlightService>()
+				.AddScoped<PilotService>()
+				.AddScoped<PlaneService>()
+				.AddScoped<PlaneTypeService>()
+				.AddScoped<StewardessService>()
+				.AddScoped<TicketService>()
+				.AddScoped<BLLService>();
 			services.AddMvc();
 			
 			
