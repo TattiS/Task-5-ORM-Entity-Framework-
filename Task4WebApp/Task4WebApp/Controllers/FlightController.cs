@@ -9,13 +9,19 @@ namespace Task4WebApp.Controllers
     public class FlightController : Controller
     {
 		//private readonly AirportService.AirportService airport;
-		private readonly AirportService.BLLService airport;
-		public FlightController(AirportService.BLLService service)
+		//private readonly AirportService.BLLService airport;
+		//public FlightController(AirportService.BLLService service)
+		//{
+		//	this.airport = service;
+
+		//}
+		private readonly AirportService.Services.FlightService airport;
+
+		public FlightController(AirportService.Services.FlightService service)
 		{
 			this.airport = service;
-			
-		}
 
+		}
 
 		// GET: api/flights
 		[HttpGet]
