@@ -12,14 +12,20 @@ namespace Task4WebApp.Controllers
     [Route("api/Pilots")]
     public class PilotsController : Controller
     {
-		private readonly AirportService.BLLService airport;
+		//private readonly AirportService.BLLService airport;
 
-		public PilotsController(AirportService.BLLService service)
+		//public PilotsController(AirportService.BLLService service)
+		//{
+		//	this.airport = service;
+
+		//}
+		private readonly AirportService.Services.PilotService airport;
+
+		public PilotsController(AirportService.Services.PilotService service)
 		{
 			this.airport = service;
 
 		}
-
 		// GET: api/Pilots
 		[HttpGet]
         public IActionResult Get()

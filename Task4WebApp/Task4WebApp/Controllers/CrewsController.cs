@@ -13,8 +13,15 @@ namespace Task4WebApp.Controllers
     public class CrewsController : Controller
     {
 		//private readonly AirportService.AirportService airport;
-		private readonly AirportService.BLLService airport;
-		public CrewsController(AirportService.BLLService service)
+		//private readonly AirportService.BLLService airport;
+		//public CrewsController(AirportService.BLLService service)
+		//{
+		//	this.airport = service;
+
+		//}
+		private readonly AirportService.Services.CrewService airport;
+
+		public CrewsController(AirportService.Services.CrewService service)
 		{
 			this.airport = service;
 
