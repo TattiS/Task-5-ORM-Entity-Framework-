@@ -67,11 +67,9 @@ namespace AirportService.Services
 		public List<CrewDTO> GetCrews()
 		{
 			List<Crew> crews = new List<Crew>();
-			foreach (var i in unit.DeparturesRepo.GetEntities(includeProperties: "CrewItem,PlaneItem"))
-			{
-				if (i.CrewItem != null)
-				{ crews.Add(i.CrewItem); }
-			}
+			
+			crews = unit.CrewRepository.GetEntities();
+
 			return mapper.Map<List<Crew>, List<CrewDTO>>(crews);
 		}
 
@@ -85,7 +83,7 @@ namespace AirportService.Services
 			if (value != null)
 			{
 				Crew newCrew = mapper.Map<CrewDTO, Crew>(value);
-				unit.DeparturesRepo.GetEntities().FindAll(p => p.CrewItem.Id.Equals(value.Id)).ForEach(c => c.CrewItem = newCrew);
+				unit.CrewRepository.Update(newCrew);
 				unit.SaveChanges();
 			}
 			else

@@ -7,7 +7,7 @@ namespace DALProject.Models
     {
 		
 		public int PilotId { get; set; }
-		[ForeignKey("CrewId")]
+	
 		public List<Stewardess> Stewardesses { get; set; }
 		
 	}

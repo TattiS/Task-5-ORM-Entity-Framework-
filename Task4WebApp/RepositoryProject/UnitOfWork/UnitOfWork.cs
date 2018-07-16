@@ -16,6 +16,7 @@ namespace DALProject.UnitOfWork
 		private Repository<Stewardess> stewardesses;
 		private Repository<Pilot> pilots;
 		private Repository<PlaneType> planeTypes;
+		private CrewRepository crewRepository;
 
 		public UnitOfWork(MainDBContext dBContext)
 		{
@@ -74,6 +75,17 @@ namespace DALProject.UnitOfWork
 					this.planeTypes = new Repository<PlaneType>(mainDB);
 				}
 				return this.planeTypes;
+			}
+		}
+		public CrewRepository CrewRepository
+		{
+			get
+			{
+				if (this.crewRepository == null)
+				{
+					this.crewRepository = new CrewRepository(mainDB);
+				}
+				return this.crewRepository;
 			}
 		}
 
