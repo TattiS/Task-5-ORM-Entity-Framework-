@@ -31,8 +31,8 @@ namespace Task4WebApp
 				.AddScoped<PlaneService>()
 				.AddScoped<PlaneTypeService>()
 				.AddScoped<StewardessService>()
-				.AddScoped<TicketService>()
-				.AddScoped<BLLService>();
+				.AddScoped<TicketService>();
+				
 			services.AddMvc();
 			
 			
