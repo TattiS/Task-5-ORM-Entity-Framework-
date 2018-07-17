@@ -12,7 +12,6 @@ namespace DALProject.Models
 		[Required]
 		public string Surname { get; set; }
 		public DateTime BirthDate { get; set; }
-		[Required]
 		public int CrewId { get; set; }
 	}
 }

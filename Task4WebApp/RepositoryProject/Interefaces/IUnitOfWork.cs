@@ -8,11 +8,11 @@ namespace DALProject.Interefaces
 {
     interface IUnitOfWork
     {
-		Repository<Flight> FlightsRepo { get;  }
-		Repository<Departure> DeparturesRepo { get;  }
-		Repository<Stewardess> StewardessesRepo { get; }
-		Repository<Pilot> PilotsRepo { get;  }
-		Repository<PlaneType> PlaneTypesRepo { get;  }
+		IRepository<Flight> FlightsRepo { get;  }
+		IRepository<Departure> DeparturesRepo { get;  }
+		IRepository<Stewardess> StewardessesRepo { get; }
+		IRepository<Pilot> PilotsRepo { get;  }
+		IRepository<PlaneType> PlaneTypesRepo { get;  }
 
 		void SaveChanges();
 	}
