@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using DALProject.Interefaces;
 using DALProject.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +18,7 @@ namespace DALProject.Repositories
 		}
 		public override List<Crew> GetEntities(Expression<Func<Crew, bool>> filter = null, Func<IQueryable<Crew>, IOrderedQueryable<Crew>> orderBy = null, string includeProperties = "")
 		{
-			IQueryable<Crew> query = base.context.Set<Crew>().Include("Stewardesses");
+			IQueryable<Crew> query = base.context.Set<Crew>().Include(p=>p.Stewardesses);
 			
 			if (filter != null)
 			{

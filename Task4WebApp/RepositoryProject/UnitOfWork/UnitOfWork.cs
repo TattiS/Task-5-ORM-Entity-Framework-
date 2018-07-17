@@ -11,19 +11,19 @@ namespace DALProject.UnitOfWork
 	public class UnitOfWork:IUnitOfWork, IDisposable
     {
 		private MainDBContext mainDB;
-		private Repository<Flight> flights;
-		private Repository<Departure> departures;
-		private Repository<Stewardess> stewardesses;
-		private Repository<Pilot> pilots;
-		private Repository<PlaneType> planeTypes;
-		private CrewRepository crewRepository;
+		private IRepository<Flight> flights;
+		private IRepository<Departure> departures;
+		private IRepository<Stewardess> stewardesses;
+		private IRepository<Pilot> pilots;
+		private IRepository<PlaneType> planeTypes;
+		private IRepository<Crew> crews;
 
 		public UnitOfWork(MainDBContext dBContext)
 		{
 			mainDB = dBContext;
 		}
 
-		public Repository<Flight> FlightsRepo
+		public IRepository<Flight> FlightsRepo
 		{
 			get {
 				if (this.flights == null)
@@ -33,18 +33,18 @@ namespace DALProject.UnitOfWork
 				return this.flights;
 			}
 		}
-		public Repository<Departure> DeparturesRepo
+		public IRepository<Departure> DeparturesRepo
 		{
 			get
 			{
 				if (this.departures == null)
 				{
-					this.departures = new Repository<Departure>(mainDB);
+					this.departures = new DepartureRepository(mainDB);
 				}
 				return this.departures;
 			}
 		}
-		public Repository<Stewardess> StewardessesRepo
+		public IRepository<Stewardess> StewardessesRepo
 		{
 			get
 			{
@@ -55,7 +55,7 @@ namespace DALProject.UnitOfWork
 				return this.stewardesses;
 			}
 		}
-		public Repository<Pilot> PilotsRepo
+		public IRepository<Pilot> PilotsRepo
 		{
 			get
 			{
@@ -66,7 +66,7 @@ namespace DALProject.UnitOfWork
 				return this.pilots;
 			}
 		}
-		public Repository<PlaneType> PlaneTypesRepo
+		public IRepository<PlaneType> PlaneTypesRepo
 		{
 			get
 			{
@@ -77,17 +77,18 @@ namespace DALProject.UnitOfWork
 				return this.planeTypes;
 			}
 		}
-		public CrewRepository CrewRepository
+		public IRepository<Crew> CrewRepository
 		{
 			get
 			{
-				if (this.crewRepository == null)
+				if (this.crews == null)
 				{
-					this.crewRepository = new CrewRepository(mainDB);
+					this.crews = new CrewRepository(mainDB);
 				}
-				return this.crewRepository;
+				return this.crews;
 			}
 		}
+
 
 		public void SaveChanges()
 		{

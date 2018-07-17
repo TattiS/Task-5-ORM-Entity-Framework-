@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DALProject.Repositories
 {
-	public class Repository<TEntity>:IRepositoty<TEntity> where TEntity:class
+	public class Repository<TEntity>:IRepository<TEntity> where TEntity:class
     {
 		protected readonly MainDBContext context;
 		protected DbSet<TEntity> dataSet;
